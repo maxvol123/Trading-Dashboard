@@ -32,7 +32,9 @@ export function PriceTicker({symbol}: Props) {
     if (state.status === "error") {
         return <div>{state.message}</div>
     }
-    
+    if (state.status === "reconnecting") {
+      return <div>Reconnecting, attempt {state.attempt}</div>
+    }
     
     const {data} = state
 
