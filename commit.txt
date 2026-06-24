@@ -1,0 +1,7 @@
+feat(pair-detail): add interval switcher with loading state
+
+- Add INTERVALS const with derived Interval type via as const + typeof
+- Add useState for current interval and loading flag
+- Implement client-side fetch on interval change
+- Show loading overlay (opacity + disabled buttons) instead of replacing UI
+- Add navigation link from ticker list to pair detail page

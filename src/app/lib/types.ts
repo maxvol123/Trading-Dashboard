@@ -34,4 +34,5 @@ export interface BinanceTickerInfo {
     high: number;
     low: number;
     volume: number;
+    date: number;
 }

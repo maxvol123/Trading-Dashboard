@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { BinanceData, BinanceTickerInfo } from '../lib/types';
+import { BinanceData, BinanceTickerInfo } from '../src/app/lib/types';
 
 
 type TickerState =
@@ -40,6 +40,7 @@ export function useBinanceTicker(symbol: string):TickerState  {
                 high: parseFloat(dataFromBinance.h),
                 low: parseFloat(dataFromBinance.l),
                 volume: parseFloat(dataFromBinance.v),
+                date: dataFromBinance.E
             }
             setState({status: "success", data: uiData})
         }

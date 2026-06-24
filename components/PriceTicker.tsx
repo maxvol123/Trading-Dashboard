@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from "react";
 import { useBinanceTicker } from "../hooks/useBinanceTicker";
+import Link from "next/link";
 interface Props {
     symbol: string
 }
@@ -40,8 +41,8 @@ export function PriceTicker({symbol}: Props) {
 
 
   return (
-    <div className="">
-        <div>{symbol} <span className={colorMap[textcolor]}>{data.price}</span></div>
-    </div>
+       <Link className="" href={`/pair/${symbol.toLowerCase()}`}>
+        <div className="hover:text-gray-500">{symbol} <span className={colorMap[textcolor]}>{data.price}</span></div>
+      </Link>
   );
 }
