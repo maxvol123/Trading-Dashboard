@@ -1,7 +1,9 @@
-feat(pair-detail): add interval switcher with loading state
+feat(pair-detail): add live candle updates via kline WebSocket
 
-- Add INTERVALS const with derived Interval type via as const + typeof
-- Add useState for current interval and loading flag
-- Implement client-side fetch on interval change
-- Show loading overlay (opacity + disabled buttons) instead of replacing UI
-- Add navigation link from ticker list to pair detail page
+- Add useBinanceKline hook subscribing to kline_{interval} stream
+- Use useRef for ISeriesApi to access series across useEffects
+- Update last candle in real-time via series.update()
+- Recreate WebSocket on interval change via dependencies
+- Apply same reconnect pattern (exponential backoff, MAX_ATTEMPTS)
+- Handle UTCTimestamp branded type with as UTCTimestamp assertion
+- Math.floor for time consistency between REST and WebSocket

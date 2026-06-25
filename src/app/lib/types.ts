@@ -1,4 +1,7 @@
 // General data
+
+import { UTCTimestamp } from "lightweight-charts";
+
 // https://developers.binance.com/docs/binance-spot-api-docs/web-socket-streams#individual-symbol-ticker-streams
 export interface BinanceData {
     "e": string,      // Event type
@@ -25,7 +28,16 @@ export interface BinanceData {
     "L": number,             // Last trade Id
     "n": number              // Total number of trades
 }
-
+export interface BinanceKlineData {
+    "k": {
+        "t": number, // Kline start time
+        "o": string,  // Open price
+        "c": string,  // Close price
+        "h": string,  // High price
+        "l": string,  // Low price
+        "x": boolean // Is this kline closed?
+  }
+}
 // Simple data for UI
 export interface BinanceTickerInfo {
     symbol: string;
@@ -35,4 +47,12 @@ export interface BinanceTickerInfo {
     low: number;
     volume: number;
     date: number;
+}
+
+export interface BinanceKlineInfo {
+    time: UTCTimestamp;
+    open: number;
+    high : number;
+    low: number;
+    close: number;
 }
