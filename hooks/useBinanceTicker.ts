@@ -26,7 +26,7 @@ export function useBinanceTicker(symbol: string):TickerState  {
             setState({ status: 'error', code: "not_found" , message: `Symbol ${symbol} not found` });
             notFoundDetected = true 
             wss?.close();
-        }, 5000);
+        }, 10000);
         wss.onopen = ()=>{
             attemptNumber = 0
         }

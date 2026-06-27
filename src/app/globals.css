@@ -1,1 +1,13 @@
 @import "tailwindcss";
+.backg1{
+    position:absolute; z-index:0; width:160px; height:160px; right:30%; top:30%; border-radius:50%; background:radial-gradient(circle,#c7d2fe,rgba(199,210,254,0)); filter:blur(6px); animation:floaty 11s ease-in-out infinite reverse;
+}
+.backg2{
+    position:absolute; z-index:0; width:220px; height:220px; right:10%; top:10%; border-radius:50%; background:radial-gradient(circle,#bfdbfe,rgba(191,219,254,0)); filter:blur(6px); animation:floaty 9s ease-in-out infinite;
+}
+h1 {
+    margin:0; font:800 44px/1.04 Manrope; letter-spacing:-.03em; color:#0f172a;
+}
+p{
+    font:500 16px/1.6 Manrope; color:#475569;
+}

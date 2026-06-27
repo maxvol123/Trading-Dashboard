@@ -12,7 +12,6 @@ interface Props {
 };
 
 export function PriceTicker({symbol}: Props) {
-  const previousPrice = useRef<number | null>(null)
   const state = useBinanceTicker(symbol);
   const [textcolor, setColor] = useState<"green" | "red" | "black">("black")
 
@@ -20,11 +19,12 @@ export function PriceTicker({symbol}: Props) {
     useEffect(() => {
         if (state.status !== "success") return
         const {data} = state
-      if (previousPrice.current !== null) {
-        if (data.price>previousPrice.current) setColor("green")
-        else if (data.price<previousPrice.current) setColor("red")
-      }
-      previousPrice.current = data.price; 
+        if (data.priceChangePercent===0) setColor("black") 
+          else
+        if (data.priceChangePercent>0) setColor("green")
+          else
+        if (data.priceChangePercent<0) setColor("red")
+
       
     }, [state])
     if (state.status === "loading") {
@@ -42,7 +42,7 @@ export function PriceTicker({symbol}: Props) {
 
   return (
        <Link className="" href={`/pair/${symbol.toLowerCase()}`}>
-        <div className="hover:text-gray-500">{symbol} <span className={colorMap[textcolor]}>{data.price}</span></div>
+        <div className="hover:text-gray-500">{symbol} <span className="mr-1 ">{data.price}</span><span className={colorMap[textcolor]}>{data.priceChangePercent}%</span></div>
       </Link>
   );
 }

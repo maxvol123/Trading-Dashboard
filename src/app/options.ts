@@ -4,3 +4,4 @@ export const sizes = {
 }as const
 export const INTERVALS = ["15m","1h", "4h", "1d"] as const
 export type Interval = typeof INTERVALS[number]
+export const TokensArr = ["BTCUSDT", "ETHUSDT", "DOGEUSDT", "ADAUSDT", "SOLUSDT"]
