@@ -1,13 +1,16 @@
 @import "tailwindcss";
-.backg1{
-    position:absolute; z-index:0; width:160px; height:160px; right:30%; top:30%; border-radius:50%; background:radial-gradient(circle,#c7d2fe,rgba(199,210,254,0)); filter:blur(6px); animation:floaty 11s ease-in-out infinite reverse;
-}
-.backg2{
-    position:absolute; z-index:0; width:220px; height:220px; right:10%; top:10%; border-radius:50%; background:radial-gradient(circle,#bfdbfe,rgba(191,219,254,0)); filter:blur(6px); animation:floaty 9s ease-in-out infinite;
+@theme {
+    --font-manrope: var(--font-manrope), sans-serif;
 }
 h1 {
-    margin:0; font:800 44px/1.04 Manrope; letter-spacing:-.03em; color:#0f172a;
+  font:800 Manrope; letter-spacing:-.03em;
 }
 p{
-    font:500 16px/1.6 Manrope; color:#475569;
+  font:500 16px/1.6 Manrope;
+}
+.logo{
+  width: 28px; height: 28px; border-radius: 8px; background: rgb(59, 130, 246); display: flex; align-items: center; justify-content: center;
+}
+.logo > div{
+  width: 10px; height: 10px; background: rgb(255, 255, 255); transform: rotate(45deg); border-radius: 2px;
 }

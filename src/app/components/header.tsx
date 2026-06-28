@@ -1,31 +1,30 @@
-import { PriceTicker } from "../../../components/PriceTicker"
+'use client'
+import Link from "next/link"
+import { PriceTicker } from "./PriceTicker"
+import { SearchBar } from "./searchBar"
 
 interface Props {
-    navElements: NavElement[],
     symbolList: string[]
 }
-type NavElement = Logo | StringElement | Button
-type Logo = {
-    image: string,
-    url: string
-}
-type StringElement = {
-    title: string,
-    url: string
-}
-type Button = {
-    title: string,
-    bgColor: "#2563eb" | "#eff6ff"
-    url: string
-}
-export default function ({navElements, symbolList}: Props) {
+export default function ({ symbolList}: Props) {
    return( 
-    <div className="flex justify-around  py-2 px-1 border-b border-gray-200 mb-5"> 
-        {symbolList.map((symbol) => (
-            <div key={symbol} className="w-60"> 
-            <PriceTicker symbol={symbol}/>
+    <header>
+        <div className="py-3 px-4 flex flex-row items-center">
+            <Link href="/" className="flex flex-row">
+            <div className="logo"><div className=""></div></div>
+            <h2 className="ml-4 font-bold text-[20px]">Trading Dashboard</h2>
+            </Link>
+            <div className="ml-10">
+                <SearchBar placeholder="Search markets…"/>
             </div>
-        ))}
-    </div>
+        </div>
+        <div className="flex justify-around flex-row gap-5 py-2 px-1 border-b border-t border-[#1f2a44] mb-5 bg-[#0d1426]"> 
+            {symbolList.map((symbol) => (
+                <div key={symbol} className="min-w-62.5"> 
+                <PriceTicker symbol={symbol}/>
+                </div>
+            ))}
+        </div>
+    </header>
     )
 }

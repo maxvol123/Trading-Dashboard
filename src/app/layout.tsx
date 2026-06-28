@@ -33,8 +33,8 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${manrope.variable} h-full antialiased d-none`}
     >
-      <body className="min-h-full flex flex-col bg-white font-manrope">
-        <Header symbolList={TokensArr} navElements={[{image: "url", url: "/"}]}/>
+      <body className="min-h-full flex flex-col bg-[#0b1120] font-manrope text-white">
+        <Header symbolList={TokensArr}/>
         <div className="px-12">
         {children}
         </div></body>
