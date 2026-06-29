@@ -1,9 +1,11 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useMemo} from "react";
 import { useBinanceTicker } from "../../../hooks/useBinanceTicker";
 import Link from "next/link";
+import type { BinanceTickerInfo } from "../lib/types";
 interface Props {
-    symbol: string
+    symbol: string,
+    initialData: BinanceTickerInfo | undefined
 }
   const colorMap = {
     bg: {
@@ -17,37 +19,31 @@ interface Props {
       black: 'text-black',
     },
 };
-export function MarketElement({symbol}: Props) {
-  const state = useBinanceTicker(symbol);
-  const [color, setColor] = useState<"green" | "red" | "black">("black")
-  const [direction, setDirection] = useState<"▲" | "▼" | "-">("-")
-    useEffect(() => {
-        if (state.status !== "success") return
-        const {data} = state
-        if (data.priceChangePercent===0) setColor("black") 
-          else
-        if (data.priceChangePercent>0) {setColor("green"); setDirection("▲")}
-          else
-        if (data.priceChangePercent<0) {setColor("red"); setDirection("▼")}
-
-      
-    }, [state])
-    if (state.status === "loading") {
-        return <div>Loading {symbol}...</div>
-    }
-    if (state.status === "error") {
-        return <div>{state.message}</div>
-    }
-    if (state.status === "reconnecting") {
-      return <div>Reconnecting, attempt {state.attempt}</div>
+export function MarketElement({ symbol, initialData }: Props) {
+    const state = useBinanceTicker(symbol);
+    const data = state.status === "success" ? state.data : initialData;
+    const {color, direction} = useMemo(()=>{
+      if (!data || data.priceChangePercent === 0) return {color: "black" as const, direction: "-" as const}
+      if (data.priceChangePercent>0) return {color: "green" as const, direction: "▲" as const}
+      else return {color: "red" as const, direction: "▼" as const}
+    }, [data])
+    
+    if (!data) return null;
+    if (state.status === "error") return <div>{state.message}</div>;
+    if (state.status === "reconnecting" && !initialData) {
+        return <div>Reconnecting...</div>;
     }
     
-    const {data} = state
-
-
-  return (
-      <Link className="" href={`/pair/${symbol.toLowerCase()}`}>
-        <div className="flex justify-between"> <p className="basis-24">{data.symbol}</p> <p className="basis-24">$ {data.price}</p> <p className={colorMap.bg[color] + " " + colorMap.text[color]+ " " + "rounded px-1 py-0.5 basis-24"}>{direction}{data.priceChangePercent} %</p> <p className="basis-32">$ {data.volume.toFixed(0)}</p></div>
-      </Link>
-  );
+    return (
+        <Link href={`/pair/${symbol.toLowerCase()}`}>
+            <div className="flex justify-between border-b border-[#1f2a44] py-2">
+                <p className="basis-24">{symbol}</p>
+                <p className="basis-24">$ {data.price}</p>
+                <p className={`${colorMap.bg[color]} ${colorMap.text[color]} rounded px-1 py-0.5 basis-24 text-center`}>
+                    {direction}{data.priceChangePercent.toFixed(2)} %
+                </p>
+                <p className="basis-32">$ {data.volume.toFixed(0)}</p>
+            </div>
+        </Link>
+    );
 }

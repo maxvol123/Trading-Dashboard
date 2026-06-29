@@ -1,9 +1,8 @@
-feat(pair-detail): add live candle updates via kline WebSocket
+feat(homepage): add REST initial data + WebSocket live updates pattern
 
-- Add useBinanceKline hook subscribing to kline_{interval} stream
-- Use useRef for ISeriesApi to access series across useEffects
-- Update last candle in real-time via series.update()
-- Recreate WebSocket on interval change via dependencies
-- Apply same reconnect pattern (exponential backoff, MAX_ATTEMPTS)
-- Handle UTCTimestamp branded type with as UTCTimestamp assertion
-- Math.floor for time consistency between REST and WebSocket
+- Add fetchAllTickers to load all USDT pairs in one batch request
+- Pass initialData prop to MarketElement for instant render
+- Refactor MarketElement to single render with computed data
+- Use useMemo for derived color/direction state (replaced useState+useEffect)
+- Rename BinanceTicker24h interface (was conflicting with Symbol global)
+- Fix shadowing by renaming callback parameter instead of field

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { BinanceData, BinanceTickerInfo } from '../src/app/lib/types';
+import type { BinanceData, BinanceTickerInfo } from '../src/app/lib/types';
 
 
 type TickerState =
@@ -22,11 +22,6 @@ export function useBinanceTicker(symbol: string):TickerState  {
         let notFoundDetected = false
         function connect() {
         wss = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@ticker`)
-        timeoutId = setTimeout(() => {
-            setState({ status: 'error', code: "not_found" , message: `Symbol ${symbol} not found` });
-            notFoundDetected = true 
-            wss?.close();
-        }, 20000);
         wss.onopen = ()=>{
             attemptNumber = 0
         }

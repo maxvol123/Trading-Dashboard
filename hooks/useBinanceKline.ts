@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import {BinanceKlineData, BinanceKlineInfo} from '../src/app/lib/types';
+import type {BinanceKlineData, BinanceKlineInfo} from '../src/app/lib/types';
 import { Interval } from '@/app/options';
 import { UTCTimestamp } from 'lightweight-charts';
 
