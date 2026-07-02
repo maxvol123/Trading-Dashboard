@@ -1,5 +1,5 @@
 'use client'
-import { CandlestickSeries, createChart, ISeriesApi } from "lightweight-charts";
+import { CandlestickSeries, ColorType, createChart, ISeriesApi } from "lightweight-charts";
 import { Candle, fetchCandles } from "../lib/binance"
 import { useEffect, useRef, useState } from "react";
 import {sizes, Interval, INTERVALS} from "../options"
@@ -19,10 +19,18 @@ export default function ({initialCandles, symbol}: Props) {
         if (containerRef.current) {
             const chart = createChart(containerRef.current, {
                 autoSize: true,
+                layout: {
+                    background: { type: ColorType.Solid, color: '#0b1120' },
+                    textColor: '#64748b'
+                },
+                grid: {
+                    vertLines: { color: "#0b1120" },
+                    horzLines: { color: '#27272a' },
+                },
             });
             const candlestickSeries = chart.addSeries(CandlestickSeries, {
                 upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
-                wickUpColor: '#26a69a', wickDownColor: '#ef5350',
+                wickUpColor: '#26a69a', wickDownColor: '#ef5350'    
             });
             candlestickSeries.setData(candles)
             seriesRef.current = candlestickSeries
@@ -41,7 +49,7 @@ export default function ({initialCandles, symbol}: Props) {
     async function changeInterval(interval:Interval) {
         setLoading(true)
         setCurrentInterval(interval)
-        const newCandles = await fetchCandles(symbol.toUpperCase(), interval, 200);
+        const newCandles = await fetchCandles(symbol.toUpperCase(), interval, 300);
         if (!newCandles) {
                 console.error(`Failed to load ${symbol} for interval ${interval}`);
                 return;
@@ -51,22 +59,22 @@ export default function ({initialCandles, symbol}: Props) {
     }
 return (
     <div>
-        <div className="flex flex-row select-none mb-2">
+        <div className="flex flex-row select-none justify-center mb-2 bg-[#111a30] w-fit mt-5 py-1 gap-2 px-4 rounded-2xl">
             {INTERVALS.map(interval => (
                 <button
                     key={interval}
-                    className={`mr-3 px-2 ${
+                    className={` px-2 w-12 py-1 ${
                         interval === currentInterval
-                            ? 'bg-blue-500 text-white'
-                            : 'bg-gray-400'
+                            ? 'bg-[#0b1120] rounded-2xl text-white'
+                            : ''
                     }`}
                     onClick={() => changeInterval(interval)}
-                    disabled={loading}  // ← блокируем кнопки во время загрузки
+                    disabled={loading} 
                 >
                     {interval}
                 </button>
             ))}
-            {loading && <span className="ml-2 text-sm text-gray-500">Loading...</span>}
+            {loading && <span className="ml-2 text-sm text-gray-500 pt-1.5">Loading...</span>}
         </div>
         <div 
             ref={containerRef} 

@@ -18,7 +18,6 @@ export function useBinanceTicker(symbol: string):TickerState  {
         let reconnectTimer: NodeJS.Timeout | null = null;
         let attemptNumber:number = 0
         let intentionallyClosed = false
-        let timeoutId: NodeJS.Timeout | null = null
         let notFoundDetected = false
         function connect() {
         wss = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@ticker`)
@@ -26,7 +25,6 @@ export function useBinanceTicker(symbol: string):TickerState  {
             attemptNumber = 0
         }
         wss.onmessage = (event) => {
-            if (timeoutId) clearTimeout(timeoutId);
             const dataFromBinance:BinanceData = JSON.parse(event.data)
             const uiData:BinanceTickerInfo = {
                 symbol: dataFromBinance.s,
@@ -40,14 +38,8 @@ export function useBinanceTicker(symbol: string):TickerState  {
             setState({status: "success", data: uiData})
         }
         wss.onclose = () => {
-            if (timeoutId) clearTimeout(timeoutId);
             if (!intentionallyClosed && !notFoundDetected) scheduleReconnect();  
         }
-        // wss.onerror = (error) => {
-        //     console.error(error)
-        //     setState({status: "error", code: "connection_lost", message: `Lost connection Error`})
-        //     clearTimeout(timeoutId);
-        // }
         }
         function scheduleReconnect() {
     if (attemptNumber >= MAX_ATTEMPTS) {
@@ -64,7 +56,6 @@ export function useBinanceTicker(symbol: string):TickerState  {
         attempt: attemptNumber,
     })
     const delay = Math.min(30000, 1000 * Math.pow(2, attemptNumber));
-    console.log(delay);
     
     attemptNumber++;
     reconnectTimer = setTimeout(connect, delay);
@@ -73,7 +64,6 @@ export function useBinanceTicker(symbol: string):TickerState  {
         return () => {
             intentionallyClosed = true;
             if (reconnectTimer) clearTimeout(reconnectTimer);
-            if (timeoutId) clearTimeout(timeoutId);
             if (wss) wss.close();
         };
     }, [symbol])

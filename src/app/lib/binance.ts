@@ -21,7 +21,6 @@ export async function fetchCandles(symbol: string, interval: Interval, limit: nu
     try {
         const response = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`)
         if (!response.ok) {
-           console.log('error, fetchCandles, response not ok');
            return null
         }
         const data: unknown[][] = await response.json();
@@ -34,7 +33,6 @@ export async function fetchCandles(symbol: string, interval: Interval, limit: nu
         }))
         return ans
     } catch (error) {
-        console.log(error)
         return null
     }
 }
@@ -42,7 +40,6 @@ export async function fetchMultiplePairs(): Promise<BinanceTickerInfo[] | null>{
     try {
         const response = await fetch(`https://api.binance.com/api/v3/ticker/24hr`)
         if (!response.ok) {
-           console.log('error, fetchMultiplePairs, response not ok');
            return null
         }
         const data: BinanceTicker24h[] = await response.json();
@@ -57,7 +54,27 @@ export async function fetchMultiplePairs(): Promise<BinanceTickerInfo[] | null>{
         }))
         return ans
     } catch (error) {
-        console.log(error)
+        return null
+    }
+}
+export async function fetchSymbol(symbol: string): Promise<BinanceTickerInfo | null>{
+    try {
+        const response = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol.toUpperCase()}`)
+        if (!response.ok) {
+           return null
+        }
+        const data: BinanceTicker24h = await response.json();
+        const ans:BinanceTickerInfo = {
+            symbol: data.symbol,
+            price: parseFloat(data.lastPrice),
+            priceChangePercent: parseFloat(data.priceChangePercent),
+            high: parseFloat(data.highPrice),
+            low: parseFloat(data.lowPrice),
+            volume: parseFloat(data.volume),
+            date: parseFloat(data.openTime)
+        }
+        return ans
+    } catch (error) {
         return null
     }
 }

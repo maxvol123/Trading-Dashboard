@@ -42,7 +42,7 @@ export function PriceTicker({symbol}: Props) {
 
   return (
        <Link className="" href={`/pair/${symbol.toLowerCase()}`}>
-        <div className="hover:text-gray-500 flex gap-1">{symbol} <span className="mr-1 text-[#64748b] font-medium">{data.price}</span><span className={colorMap[textcolor]}>{data.priceChangePercent}%</span></div>
+        <div className="hover:text-gray-500 flex gap-1">{symbol.toUpperCase()} <span className="mr-1 text-[#64748b] font-medium">{data.price}</span><span className={colorMap[textcolor]}>{data.priceChangePercent}%</span></div>
       </Link>
   );
 }

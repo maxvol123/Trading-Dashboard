@@ -1,5 +1,6 @@
-import {fetchCandles } from "../../lib/binance";
+import {fetchCandles } from "@/app/lib/binance";
 import PairChart from "@/app/components/pairChart";
+import { HeroTicker } from "./component/heroTicker";
 
 interface PageProps {
     params: Promise<{ symbol: string }>;
@@ -13,8 +14,8 @@ export default async function PairPage({ params }: PageProps) {
     return (
         <main className="container mx-auto p-8">
 
-            <h1 className="text-3xl font-bold mb-6">{symbol}</h1>
-            <p>Detail page for {symbol}</p>
+            <h1 className="text-3xl font-bold mb-6">{symbol.toUpperCase()}</h1>
+            <HeroTicker symbol={symbol}/>
             <PairChart initialCandles={candles} symbol={symbol} />
         </main>
     );

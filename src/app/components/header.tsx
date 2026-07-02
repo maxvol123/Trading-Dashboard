@@ -1,7 +1,7 @@
 'use client'
 import Link from "next/link"
-import { PriceTicker } from "./PriceTicker"
 import { SearchBar } from "./searchBar"
+import { PriceTicker } from "@/app/components/priceTicker"
 
 interface Props {
     symbolList: string[]

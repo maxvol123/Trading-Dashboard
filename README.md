@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trading Dashboard
 
-## Getting Started
+Real-time cryptocurrency dashboard with live price updates and candlestick charts. Built as a portfolio project to demonstrate WebSocket integration, real-time state management, and modern Next.js 15 architecture.
 
-First, run the development server:
+## Live Demo
+
+[Coming after deploy]
+
+## Screenshots
+
+[Coming soon]
+
+## Features
+
+- Live price updates for top USDT pairs via Binance WebSocket
+- Detailed pair view with candlestick chart (TradingView Lightweight Charts)
+- Multiple timeframes: 1h, 4h, 1d
+- Real-time candle updates via kline WebSocket stream
+- Search any USDT trading pair
+- Auto-reconnect with exponential backoff on connection loss
+- Dark theme optimized for extended use
+
+## Tech Stack
+
+- Next.js 15 (App Router)
+- React 19 (Server Components)
+- TypeScript
+- Tailwind CSS 4
+- Lightweight Charts by TradingView
+- Binance REST API and WebSocket streams
+
+## Architecture
+
+**Stale-while-revalidate pattern:** REST batch request loads initial data instantly, then WebSocket streams provide real-time updates. This eliminates the multi-second loading flicker seen in naive WebSocket-only implementations where each connection is established sequentially.
+Users see filled tables immediately instead of loading states.
+
+**Custom hooks:**
+- `useBinanceTicker` — subscribes to 24hr ticker stream for a symbol
+- `useBinanceKline` — subscribes to kline stream for candle updates
+
+**Discriminated union states:** connection states modeled as tagged unions (loading, success, reconnecting, error) for type-safe rendering.
+
+**Reconnect strategy:** exponential backoff with MAX_ATTEMPTS limit. Distinguishes between intentional close, invalid symbol, and network loss.
+
+## Local Development
 
 ```bash
+git clone https://github.com/maxvol123/trading-dashboard.git
+cd trading-dashboard
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+tradingDashboard/
+├── public/
+├── hooks/
+│       │   ├── useBinanceTicker.ts # 24hr ticker WS stream + reconnect logic
+│       │   └── useBinanceKline.ts  # kline (candle) WS stream + reconnect logic
+├── src/
+│   └── app/                        # Next.js App Router
+│       ├── layout.tsx              # root layout: fonts, <Header>, global shell
+│       ├── page.tsx                # home page — table of top USDT pairs
+│       ├── globals.css             # Tailwind entry + global styles
+│       ├── options.ts              # shared constants: INTERVALS, sizes, token list
+│       ├── components/
+│       │   ├── header.tsx          # top bar: logo, search, ticker strip
+│       │   ├── searchBar.tsx       # symbol search with dropdown suggestions
+│       │   ├── priceTicker.tsx     # single live ticker (used in header strip)
+│       │   ├── marketElement.tsx   # one live row in the home table
+│       │   └── pairChart.tsx       # candlestick chart + timeframe switcher
+│       ├── lib/
+│       │   ├── binance.ts          # REST calls: fetchCandles / fetchMultiplePairs / fetchSymbol
+│       │   ├── types.ts            # Binance WS + UI type definitions
+│       │   └── fetchBinanceTokenList.ts  # REST: list of all TRADING symbols (exchangeInfo)
+│       └── pair/
+│           └── [symbol]/
+│               ├── page.tsx        # pair detail page (Server Component, initial candles)
+│               └── component/
+│                   └── heroTicker.tsx  # large live price header for the pair
+├── eslint.config.mjs
+├── next.config.ts
+├── tsconfig.json
+└── package.json
+```
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+Deployed on Vercel: [link after deploy]
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## What I Learned
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Real-time data architecture: combining REST batch fetches with WebSocket streams for instant initial render
+- Discriminated unions for state modeling: replacing multiple boolean flags with tagged unions
+- React hooks lifecycle: managing cleanup for multiple concurrent WebSocket connections, avoiding race conditions on interval switches
+- Next.js App Router: Server Components for initial data fetching, Client Components for real-time state, dynamic routes with params
+- WebSocket reconnect patterns: exponential backoff with MAX_ATTEMPTS, distinguishing intentional close from network loss
+- Type-safe branded types (UTCTimestamp) for chart library integration
 
-## Deploy on Vercel
+## Future Improvements
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Watchlist with Zustand state management + localStorage persist
+- Portfolio simulation with virtual balance
+- Trade journal with statistics
+- Price alerts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Author
+
+Maksym Voloshyn - [LinkedIn](https://www.linkedin.com/in/maksym-voloshyn-8a937324b) - [GitHub](https://github.com/maxvol123)

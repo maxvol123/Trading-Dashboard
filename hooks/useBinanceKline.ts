@@ -16,26 +16,17 @@ export function useBinanceKline(symbol: string, interval: Interval):TickerState 
     const [state, setState] = useState<TickerState>({ status: 'loading' })
     const MAX_ATTEMPTS = 10;
     useEffect(()=>{
-        console.log('USEEFFECT FIRED:', symbol, interval);
         let wss: WebSocket | null = null
         let reconnectTimer: NodeJS.Timeout | null = null;
         let attemptNumber:number = 0
         let intentionallyClosed = false
-        let timeoutId: NodeJS.Timeout | null = null
         let notFoundDetected = false
         function connect() {
-            console.log('CONNECTING TO:', interval);
         wss = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@kline_${interval}`)
-        timeoutId = setTimeout(() => {
-            setState({ status: 'error', code: "not_found" , message: `Symbol ${symbol} not found` });
-            notFoundDetected = true 
-            wss?.close();
-        }, 5000);
         wss.onopen = ()=>{
             attemptNumber = 0
         }
         wss.onmessage = (event) => {
-            if (timeoutId) clearTimeout(timeoutId);
             const dataFromBinance:BinanceKlineData = JSON.parse(event.data)
             const uiData:BinanceKlineInfo = {
                 time: Math.floor(Number(dataFromBinance.k.t) / 1000) as UTCTimestamp,
@@ -47,10 +38,7 @@ export function useBinanceKline(symbol: string, interval: Interval):TickerState 
             setState({status: "success", data: uiData, isClose: dataFromBinance.k.x})
         }
         wss.onclose = () => {
-            console.log(`onclose fired for ${interval}, intentionallyClosed=${intentionallyClosed}, notFoundDetected=${notFoundDetected}`);
-    if (timeoutId) clearTimeout(timeoutId);
     if (!intentionallyClosed && !notFoundDetected) {
-        console.log(`scheduling reconnect for ${interval}`);
         scheduleReconnect();
     }
         }
@@ -70,7 +58,6 @@ export function useBinanceKline(symbol: string, interval: Interval):TickerState 
         attempt: attemptNumber,
     })
     const delay = Math.min(30000, 1000 * Math.pow(2, attemptNumber));
-    console.log(delay);
     
     attemptNumber++;
     reconnectTimer = setTimeout(connect, delay);
@@ -79,7 +66,6 @@ export function useBinanceKline(symbol: string, interval: Interval):TickerState 
         return () => {
             intentionallyClosed = true;
             if (reconnectTimer) clearTimeout(reconnectTimer);
-            if (timeoutId) clearTimeout(timeoutId);
             if (wss) wss.close();
         };
     }, [symbol, interval])

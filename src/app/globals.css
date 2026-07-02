@@ -5,9 +5,6 @@
 h1 {
   font:800 Manrope; letter-spacing:-.03em;
 }
-p{
-  font:500 16px/1.6 Manrope;
-}
 .logo{
   width: 28px; height: 28px; border-radius: 8px; background: rgb(59, 130, 246); display: flex; align-items: center; justify-content: center;
 }

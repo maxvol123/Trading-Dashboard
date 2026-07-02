@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchBinanceTokenList } from "../../../hooks/fetchBinanceTokenList";
+import { fetchBinanceTokenList } from "../lib/fetchBinanceTokenList";
 import Link from "next/link";
 
 interface Props {

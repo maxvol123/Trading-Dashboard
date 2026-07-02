@@ -20,7 +20,7 @@ interface Props {
     },
 };
 export function MarketElement({ symbol, initialData }: Props) {
-    const state = useBinanceTicker(symbol);
+    const state = useBinanceTicker(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@ticker`);
     const data = state.status === "success" ? state.data : initialData;
     const {color, direction} = useMemo(()=>{
       if (!data || data.priceChangePercent === 0) return {color: "black" as const, direction: "-" as const}
