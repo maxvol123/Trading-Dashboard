@@ -4,11 +4,13 @@ Real-time cryptocurrency dashboard with live price updates and candlestick chart
 
 ## Live Demo
 
-[Coming after deploy]
+[trading-dashboard.vercel.app](https://trading-dashboard-maxvol.vercel.app)
 
 ## Screenshots
 
-[Coming soon]
+![Homepage](./screenshots/homepage.png)
+
+![Pair Page](./screenshots/detail-page.png)
 
 ## Features
 

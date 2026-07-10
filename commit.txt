@@ -1,6 +1,0 @@
-feat(chart): apply dark theme to lightweight-charts
-
-- Set layout.background to zinc-900 solid color
-- Set textColor for axes to zinc-100
-- Set grid lines color to zinc-800 for subtle grid
-- Match chart theme with app dark mode
