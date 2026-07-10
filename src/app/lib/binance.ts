@@ -19,7 +19,7 @@ export interface BinanceTicker24h {
 }
 export async function fetchCandles(symbol: string, interval: Interval, limit: number = 100): Promise<Candle[] | null>{
     try {
-        const response = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`)
+        const response = await fetch(`https://data-api.binance.vision/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`)
         if (!response.ok) {
            return null
         }
@@ -38,7 +38,7 @@ export async function fetchCandles(symbol: string, interval: Interval, limit: nu
 }
 export async function fetchMultiplePairs(): Promise<BinanceTickerInfo[] | null>{
     try {
-        const response = await fetch(`https://api.binance.com/api/v3/ticker/24hr`)
+        const response = await fetch(`https://data-api.binance.vision/api/v3/ticker/24hr`)
         if (!response.ok) {
            return null
         }
@@ -59,7 +59,7 @@ export async function fetchMultiplePairs(): Promise<BinanceTickerInfo[] | null>{
 }
 export async function fetchSymbol(symbol: string): Promise<BinanceTickerInfo | null>{
     try {
-        const response = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol.toUpperCase()}`)
+        const response = await fetch(`https://data-api.binance.vision/api/v3/ticker/24hr?symbol=${symbol.toUpperCase()}`)
         if (!response.ok) {
            return null
         }

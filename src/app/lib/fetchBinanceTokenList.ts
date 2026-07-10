@@ -1,4 +1,4 @@
-// https://api.binance.com/api/v3/exchangeInfo
+// https://data-api.binance.vision/api/v3/exchangeInfo
 interface SymbolInfo {
     symbol: string;
     status: string;
@@ -12,7 +12,7 @@ interface ExchangeInfoResponse {
 
 export async function fetchBinanceTokenList():Promise<string[] | null> {
     try {
-        const response = await fetch("https://api.binance.com/api/v3/exchangeInfo")
+        const response = await fetch("https://data-api.binance.vision/api/v3/exchangeInfo")
         if (!response.ok) return null
         const data:ExchangeInfoResponse = await response.json()
         return data.symbols
